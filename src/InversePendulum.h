@@ -1,0 +1,14 @@
+//
+// Created by trevor on 5/14/22.
+//
+
+#ifndef LEARNOPENGL_CLION_INVERSEPENDULUM_H
+#define LEARNOPENGL_CLION_INVERSEPENDULUM_H
+
+
+class InversePendulum {
+
+};
+
+
+#endif //LEARNOPENGL_CLION_INVERSEPENDULUM_H
