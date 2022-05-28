@@ -2,16 +2,32 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include "src/InversePendulum.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+
 void processInput(GLFWwindow *window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-int main()
+void display(void)
 {
+    glClear( GL_COLOR_BUFFER_BIT);
+    glColorf(0.0, 1.0, 0.0);
+    glBegin(GL_POLYGON);
+    glVertex3f(2.0, 4.0, 0.0);
+    glVertex3f(8.0, 4.0, 0.0);
+    glVertex3f(8.0, 6.0, 0.0);
+    glVertex3f(2.0, 6.0, 0.0);
+    glEnd();
+    glFlush();
+}
+
+
+
+int main() {
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -25,9 +41,8 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Inverse Pendulum", NULL, NULL);
-    if (window == NULL)
-    {
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Inverse Pendulum", NULL, NULL);
+    if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
@@ -37,19 +52,28 @@ int main()
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
     // render loop
     // -----------
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         // input
         // -----
         processInput(window);
+
+        // do stuff
+        // -----
+        display();
+
+        InversePendulum inversePendulum = InversePendulum(1.0, 90.5, 1.0, 1.0,
+                                                          2.0, 0.1);
+        for (int i = 0; i < 100; i++){
+            double time_delta = .001;
+
+        }
 
         // render
         // ------
@@ -70,16 +94,14 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+void processInput(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);

@@ -21,6 +21,11 @@ add_subdirectory(tests)
 add_subdirectory(glfw)
 include_directories(glfw/include)
 include_directories(glad/include)
+include_directories(${glfw_INCLUDE_DIRS} "${GLFW_SOURCE_DIR}/deps")
+
+set(SOURCE_FILES src/InversePendulum.cpp src/InversePendulum.h )
+set(GLAD "glfw/deps/glad/glad.h"
+        "glfw/deps/glad.c")
 
 set(SOURCE_FILES glad/src/glad.c src/InversePendulum.cpp src/InversePendulum.h )
 add_library(SourcesLib ${SOURCE_FILES})

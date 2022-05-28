@@ -1,25 +1,45 @@
 #include "InversePendulum.h"
-
-
-InversePendulum::InversePendulum(float sled_position,
-                                 float length_init,
-                                 float mass_init,
-                                 float theta) {
-    state = State(sled_position, 0, theta, 0);
-    mass = mass_init;
-    length = length_init;
-}
+#include <cmath>
 
 State InversePendulum::getState() {
     return InversePendulum::state;
 }
 
-State::State(float x_init, float x_dot_init, float t_init, float t_dot_init) {
-    x = x_init;
-    x_dot = x_dot_init;
-    t = t_init;
-    t_dot = t_dot_init;
+void InversePendulum::setState(State new_state) {
+    InversePendulum::state = new_state;
 }
+
+
+void InversePendulum::iterate(double u, double time) {
+    double Sy = sin(InversePendulum::state.t);
+    double Cy = cos(InversePendulum::state.t);
+
+    double x = InversePendulum::getState().x;
+    double x_dot = InversePendulum::getState().x_dot;
+    double t = InversePendulum::getState().t;
+    double t_dot = InversePendulum::getState().t_dot;
+    double m = InversePendulum::pend_mass;
+    double M = InversePendulum::cart_mass;
+    double L = InversePendulum::length;
+    double d = InversePendulum::damping;
+    double g = -9.81;
+
+    double D = m * L * L * (M + m * (1 - pow(Cy, 2.0)));
+
+    double dx_dt = x_dot;
+    double dx_dot_dt = (1.0 / D) * (-pow(m, 2.0) * pow(L, 2.0) * g * Cy * Sy +
+                              m * pow(L, 2.0) * (m * L * pow(t_dot, 2.0) * Sy - d * x_dot)) + m * L * L * (1.0 / D) * u;
+    double dt_dt = t_dot;
+    double dt_dot_dt = (1.0 / D) * ((m + M) * m * g * L * Sy - m * L * Cy * (m * L * pow(t_dot, 2.0) * Sy - d * x_dot)) -
+                 m * L * Cy * (1.0 / D) * u;
+
+    State new_state = State(x * dx_dt * time,
+                            x_dot * dx_dot_dt * time,
+                            t * dt_dt * time,
+                            t_dot * dt_dot_dt * time);
+    InversePendulum::setState(new_state);
+}
+
 
 State::State() {
     x = 0;
