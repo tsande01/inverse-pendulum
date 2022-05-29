@@ -17,19 +17,19 @@ add_subdirectory(dependencies)
 add_subdirectory(src)
 add_subdirectory(tests)
 
-# Including GLFW and GLAD
+# Including GLFW
 add_subdirectory(glfw)
 include_directories(glfw/include)
+
+# Including GLAD
 include_directories(glad/include)
-include_directories(${glfw_INCLUDE_DIRS} "${GLFW_SOURCE_DIR}/deps")
+set(SOURCE_FILES main.cpp glad/src/glad.c src/InversePendulum.cpp)
 
-set(SOURCE_FILES src/InversePendulum.cpp src/InversePendulum.h )
-set(GLAD "glfw/deps/glad/glad.h"
-        "glfw/deps/glad.c")
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
 
-set(SOURCE_FILES glad/src/glad.c src/InversePendulum.cpp src/InversePendulum.h )
-add_library(SourcesLib ${SOURCE_FILES})
-add_executable(${CMAKE_PROJECT_NAME} main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} Catch2 ApprovalTests fmt filesystem)
-target_link_libraries(${CMAKE_PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${OPENGL_LIBRARY})
+# Linking GLFW and OGL
+target_link_libraries(${CMAKE_PROJECT_NAME}
+        glfw ${GLFW_LIBRARIES} ${OPENGL_LIBRARY}  Catch2 ApprovalTests fmt)
+
+
 
