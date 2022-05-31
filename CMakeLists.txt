@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 project(inverse-pendulum)
 
-find_package(OpenGL REQUIRED)
-
 if (MSVC)
     # Enable exceptions for clang-cl
     add_compile_options(/EHsc)
@@ -17,19 +15,10 @@ add_subdirectory(dependencies)
 add_subdirectory(src)
 add_subdirectory(tests)
 
-# Including GLFW
-add_subdirectory(glfw)
-include_directories(glfw/include)
-
-# Including GLAD
-include_directories(glad/include)
-set(SOURCE_FILES main.cpp glad/src/glad.c src/InversePendulum.cpp)
-
+set(SOURCE_FILES main.cpp src/InversePendulum.cpp)
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
 
 # Linking GLFW and OGL
-target_link_libraries(${CMAKE_PROJECT_NAME}
-        glfw ${GLFW_LIBRARIES} ${OPENGL_LIBRARY}  Catch2 ApprovalTests fmt)
-
-
+target_link_libraries(${CMAKE_PROJECT_NAME}  Catch2 ApprovalTests fmt)
+target_link_libraries(${CMAKE_PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 

@@ -27,16 +27,16 @@ void InversePendulum::iterate(double u, double time) {
     double D = m * L * L * (M + m * (1 - pow(Cy, 2.0)));
 
     double dx_dt = x_dot;
-    double dx_dot_dt = (1.0 / D) * (-pow(m, 2.0) * pow(L, 2.0) * g * Cy * Sy +
-                              m * pow(L, 2.0) * (m * L * pow(t_dot, 2.0) * Sy - d * x_dot)) + m * L * L * (1.0 / D) * u;
+    double dx_dot_dt = (1.f / D) * (-pow(m, 2.f)*pow(L, 2.f)*g*Cy*Sy +
+                              m * pow(L, 2.f) * (m * L * pow(t_dot, 2.f) * Sy - d * x_dot)) + m * L * (1.f / D) * u;
     double dt_dt = t_dot;
-    double dt_dot_dt = (1.0 / D) * ((m + M) * m * g * L * Sy - m * L * Cy * (m * L * pow(t_dot, 2.0) * Sy - d * x_dot)) -
-                 m * L * Cy * (1.0 / D) * u;
+    double dt_dot_dt = (1.f / D) * ((m + M) * m * g * L * Sy - m * L * Cy * (m * L * pow(t_dot, 2.f) * Sy - d * x_dot)) -
+                 m * L * Cy * (1.f / D) * u;
 
-    State new_state = State(x * dx_dt * time,
-                            x_dot * dx_dot_dt * time,
-                            t * dt_dt * time,
-                            t_dot * dt_dot_dt * time);
+    State new_state = State(x + dx_dt * time,
+                            x_dot + dx_dot_dt * time,
+                            t + dt_dt * time,
+                            t_dot + dt_dot_dt * time);
     InversePendulum::setState(new_state);
 }
 
