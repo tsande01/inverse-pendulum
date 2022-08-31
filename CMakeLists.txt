@@ -18,7 +18,5 @@ add_subdirectory(tests)
 set(SOURCE_FILES main.cpp src/InversePendulum.cpp)
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
 
-# Linking GLFW and OGL
-target_link_libraries(${CMAKE_PROJECT_NAME}  Catch2 ApprovalTests fmt)
-target_link_libraries(${CMAKE_PROJECT_NAME} sfml-graphics sfml-window sfml-system)
-
+target_link_libraries(${CMAKE_PROJECT_NAME} Catch2 ApprovalTests fmt )
+target_link_libraries(${CMAKE_PROJECT_NAME} sfml-graphics sfml-window sfml-system )

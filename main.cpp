@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "src/InversePendulum.h"
-#include <math.h>
+#include <cmath>
+#include <iostream>
 
 float FLOOR_HEIGHT = 25;
 float CART_WIDTH = 100;
@@ -15,10 +16,11 @@ int INTERVAL = 100000; // milliseconds
 
 int main() {
     float length = 50.f;
-    InversePendulum inversePendulum = InversePendulum(5.f, M_PI + .01f, 4.f, 4.f, length, 2.5f);
+    InversePendulum inversePendulum = InversePendulum(5.f, M_PI + .01f, 4.f, 4.f, length, 3.0f);
 
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Inverted Pendulum Simulation");
+
     sf::RectangleShape cart(sf::Vector2f(CART_WIDTH, CART_HEIGHT));
     cart.setOutlineColor(sf::Color::Black);
     cart.setOutlineThickness(LINE_WIDTH);
@@ -36,7 +38,7 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
             for (int i = 0; i <= 200; i++) {
-                inversePendulum.iterate(0.0, (float) INTERVAL / 100000);
+                inversePendulum.iterate(0.0f, (float) INTERVAL / 100000);
 
                 window.clear(sf::Color::White);
                 window.draw(cart);
